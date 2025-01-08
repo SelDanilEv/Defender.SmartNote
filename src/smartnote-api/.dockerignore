@@ -1,0 +1,25 @@
+# Exclude node_modules (will be installed in the container)
+node_modules
+npm-debug.log
+yarn-error.log
+
+# Ignore local environment files
+.env
+.env.*
+
+# Exclude logs
+logs
+*.log
+
+# Exclude Docker-related files
+Dockerfile
+docker-compose.yml
+
+# Ignore OS and editor-specific files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*.idea
+*.vscode
+*.git
