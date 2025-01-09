@@ -27,8 +27,8 @@ jobs:
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
         with:
-          context: ./src/smartnote-frontend  # Set the context to the src folder
-          dockerfile: src/smartnote-frontend/Dockerfile
+          context: ./src/smartnote-ui  # Set the context to the src folder
+          dockerfile: src/smartnote-ui/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/${{ vars.FRONTEND_IMAGE_NAME }}:latest
 
