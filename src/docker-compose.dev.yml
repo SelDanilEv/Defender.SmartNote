@@ -1,0 +1,38 @@
+services:
+  nginx:
+    image: nginx:latest
+    container_name: smart-note-proxy
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - smartnote-ui
+      - smartnote-api
+    restart: always
+
+  smartnote-ui:
+    image: defendersd/dev-smart-note-ui
+    container_name: smart-note-ui
+    restart: always
+    depends_on:
+      - smartnote-api
+
+  smartnote-api:
+    image: defendersd/dev-smart-note-api
+    container_name: smart-note-api
+    restart: always
+    environment:
+      - MONGO_URI=
+      - HUGGINGFACE_API_KEY=
+    restart: always
+
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    restart: always
+    environment:
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_POLL_INTERVAL=300
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock

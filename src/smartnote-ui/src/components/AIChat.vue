@@ -16,7 +16,6 @@
 
 <script>
 import axios from "axios";
-import envVarsHelper from "../helpers/envVarsHelper";
 
 export default {
   data() {
@@ -24,15 +23,13 @@ export default {
       prompt: "",
       response: "",
       loading: false,
-
-      apiUrl: envVarsHelper.getApiUrl(),
     };
   },
   methods: {
     async askAI() {
       this.loading = true;
       const userId = "user123"; // Replace with actual user ID
-      const result = await axios.post(`${this.apiUrl}/api/notes/askAI`, {
+      const result = await axios.post(`/api/notes/askAI`, {
         userId,
         prompt: this.prompt,
       });

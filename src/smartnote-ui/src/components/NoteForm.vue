@@ -14,7 +14,6 @@
 
 <script>
 import axios from "axios";
-import envVarsHelper from "../helpers/envVarsHelper";
 
 export default {
   props: {
@@ -29,8 +28,6 @@ export default {
         title: "",
         content: "",
       },
-
-      apiUrl: envVarsHelper.getApiUrl(),
     };
   },
   watch: {
@@ -44,14 +41,14 @@ export default {
   methods: {
     async saveNote() {
       if (this.editingNote) {
-        await axios.put(`${this.apiUrl}/api/notes/user123/${this.note.id}`, this.note);
+        await axios.put(`/api/notes/user123/${this.note.id}`, this.note);
         this.$emit("note-updated");
       } else {
         const newNote = {
           userId: "user123",
           ...this.note,
         };
-        await axios.post(`${this.apiUrl}/api/notes`, newNote);
+        await axios.post(`/api/notes`, newNote);
         this.$emit("note-added");
       }
 

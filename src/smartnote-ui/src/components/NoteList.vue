@@ -46,7 +46,6 @@
 <script>
 import axios from "axios";
 import NoteForm from "./NoteForm.vue";
-import envVarsHelper from "../helpers/envVarsHelper";
 
 export default {
   components: {
@@ -59,15 +58,13 @@ export default {
       showForm: false,
       showDeleteModal: false,
       noteToDelete: null,
-
-      apiUrl: envVarsHelper.getApiUrl(),
     };
   },
   methods: {
     async fetchNotes() {
       const userId = "user123"; // Replace with actual user ID
-      console.log(process.env);
-      const response = await axios.get(`${this.apiUrl}/api/notes/${userId}`); // Use axiosInstance
+      const response = await axios.get(`/api/notes/${userId}`);
+      console.log(response.data);
       this.notes = response.data;
     },
     confirmDelete(id) {
@@ -75,7 +72,7 @@ export default {
       this.showDeleteModal = true;
     },
     async deleteNote() {
-      await axios.delete(`${this.apiUrl}/api/notes/user123/${this.noteToDelete}`); // Use axiosInstance
+      await axios.delete(`/api/notes/user123/${this.noteToDelete}`); // Use axiosInstance
       this.showDeleteModal = false;
       this.noteToDelete = null;
       this.fetchNotes();
