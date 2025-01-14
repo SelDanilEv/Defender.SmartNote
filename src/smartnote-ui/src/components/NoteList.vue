@@ -16,10 +16,10 @@
         <tr v-for="note in notes" :key="note.id">
           <td data-label="Title" @click="editNote(note)">{{ note.title }}</td>
           <td class="hide-on-mobile" data-label="Content" @click="editNote(note)">
-            {{ note.content.length > 50 ? note.content.substring(0, 50) + '...' : note.content }}
+            {{ note.content.length > 50 ? note.content.replace(/\s+/g, ' ').substring(0, 50) + '...' : note.content }}
           </td>
           <td class="show-on-mobile" data-label="Content" @click="editNote(note)">
-            {{ note.content.length > 20 ? note.content.substring(0, 20) + '...' : note.content }}
+            {{ note.content.length > 20 ? note.content.replace(/\s+/g, ' ').substring(0, 20) + '...' : note.content }}
           </td>
           <td data-label="Actions">
             <button class="delete-button" @click.stop="confirmDelete(note.id)">Delete</button>
@@ -64,7 +64,6 @@ export default {
     async fetchNotes() {
       const userId = "user123"; // Replace with actual user ID
       const response = await axios.get(`/api/notes/${userId}`);
-      console.log(response.data);
       this.notes = response.data;
     },
     confirmDelete(id) {

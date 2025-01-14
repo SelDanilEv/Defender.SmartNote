@@ -1,8 +1,14 @@
 <template>
   <div class="ai-chat">
-    <h2>Ask AI</h2>
+    <div class="header">
+      <h2>Ask AI</h2>
+      <label v-if="isLocalhost">
+        <input type="checkbox" v-model="debugMode" />
+        Debug Mode
+      </label>
+    </div>
     <form @submit.prevent="askAI">
-      <textarea v-model="prompt" placeholder="Ask AI anything..." required></textarea>
+      <textarea v-model="prompt" placeholder="Ask AI anything related to your notes ..." required></textarea>
       <button type="submit" :disabled="loading">Ask</button>
     </form>
     <div v-if="loading" class="progress-bar">
@@ -10,6 +16,9 @@
     </div>
     <div v-if="response" class="response-panel">
       <p>{{ response }}</p>
+    </div>
+    <div v-if="debugMode && debugInfo" class="response-panel">
+      <p>{{ debugInfo }}</p>
     </div>
   </div>
 </template>
@@ -23,17 +32,31 @@ export default {
       prompt: "",
       response: "",
       loading: false,
+      debugMode: false,
+      debugInfo: null,
+      isLocalhost: window.location.hostname === "localhost",
     };
   },
   methods: {
     async askAI() {
+
+      let backendUrl = `/api/notes/askAI`;
+      if (this.debugMode) {
+        backendUrl += "/debug";
+      }
+
       this.loading = true;
       const userId = "user123"; // Replace with actual user ID
-      const result = await axios.post(`/api/notes/askAI`, {
+      const result = await axios.post(backendUrl, {
         userId,
         prompt: this.prompt,
       });
-      this.response = result.data.text;
+      if (this.debugMode) {
+        this.debugInfo = result.data;
+      }
+      else {
+        this.response = result.data.answer;
+      }
       this.loading = false;
     },
   },
@@ -46,11 +69,19 @@ export default {
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content:center;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
 .ai-chat h2 {
-  text-align: center;
-  margin-bottom: 20px;
+  margin: 0;
   color: var(--accent-color);
 }
 
@@ -124,5 +155,15 @@ export default {
 .response-panel p {
   margin: 0;
   color: var(--text-color);
+}
+
+.debug-panel {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: var(--secondary-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: var(--text-color);
+  white-space: wrap;
 }
 </style>
