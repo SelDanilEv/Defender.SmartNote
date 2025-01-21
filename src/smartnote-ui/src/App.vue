@@ -3,9 +3,10 @@
     <header>
       <nav>
         <h1>SmartNote</h1>
-        <ul>
-          <li><router-link to="/">Notes</router-link></li>
+        <ul v-if="isLoggedIn">
+          <li><router-link to="/note">Notes</router-link></li>
           <li><router-link to="/ai">AI Assistant</router-link></li>
+          <li><a href="#" @click.prevent="logout">Log Out</a></li>
         </ul>
       </nav>
     </header>
@@ -19,8 +20,16 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
+
 export default {
   name: "App",
+  computed: {
+    ...mapGetters(["isLoggedIn"]),
+  },
+  methods: {
+    ...mapActions(["logout"]),
+  },
 };
 </script>
 
@@ -34,7 +43,6 @@ body {
   background-color: var(--bg-color);
   color: var(--text-color);
   overflow-y: scroll;
-  /* Always show scrollbar */
 }
 
 #app {
@@ -43,7 +51,6 @@ body {
   min-height: 100vh;
 }
 
-/* Header styling */
 header {
   background-color: var(--primary-color);
   padding: 1rem;
@@ -89,7 +96,6 @@ nav a.router-link-exact-active {
   color: var(--primary-color);
 }
 
-/* Main content styling */
 main {
   flex: 1;
   padding: 2rem;
@@ -101,7 +107,6 @@ main {
   margin: 1rem;
 }
 
-/* Footer styling */
 footer {
   background-color: var(--primary-color);
   color: var(--text-color);
@@ -111,7 +116,6 @@ footer {
   border-top: 1px solid var(--border-color);
 }
 
-/* Responsive styling */
 @media (max-width: 600px) {
   header {
     padding: 0.5rem;

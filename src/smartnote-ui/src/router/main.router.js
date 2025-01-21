@@ -1,10 +1,13 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Home from "../views/HomeView.vue";
+import Notes from "../views/NotesView.vue";
 import AI from "../views/AIView.vue";
+import LoginView from "../views/LoginView.vue";
 
 const routes = [
-  { path: "/", name: "Home", component: Home },
+  { path: "/", redirect: "/login" },
+  { path: "/note", name: "Notes", component: Notes },
   { path: "/ai", name: "AI", component: AI },
+  { path: "/login", name: "Login", component: LoginView },
 ];
 
 const router = createRouter({

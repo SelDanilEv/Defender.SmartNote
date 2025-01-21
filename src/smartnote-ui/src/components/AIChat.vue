@@ -2,7 +2,7 @@
   <div class="ai-chat">
     <div class="header">
       <h2>Ask AI</h2>
-      <label v-if="isLocalhost">
+      <label v-if="isLocal">
         <input type="checkbox" v-model="debugMode" />
         Debug Mode
       </label>
@@ -24,7 +24,8 @@
 </template>
 
 <script>
-import axios from "axios";
+import axiosInstance from "@/utils/axiosInstance";
+import isLocal from "@/utils/isLocalHost";
 
 export default {
   data() {
@@ -34,21 +35,19 @@ export default {
       loading: false,
       debugMode: false,
       debugInfo: null,
-      isLocalhost: window.location.hostname === "localhost",
+      isLocal: isLocal,
     };
   },
   methods: {
     async askAI() {
 
-      let backendUrl = `/api/notes/askAI`;
+      let backendUrl = `/note/askAI`;
       if (this.debugMode) {
         backendUrl += "/debug";
       }
 
       this.loading = true;
-      const userId = "user123"; // Replace with actual user ID
-      const result = await axios.post(backendUrl, {
-        userId,
+      const result = await axiosInstance.post(backendUrl, {
         prompt: this.prompt,
       });
       if (this.debugMode) {
@@ -75,7 +74,7 @@ export default {
 
 .header {
   display: flex;
-  justify-content:center;
+  justify-content: center;
   align-items: center;
   margin-bottom: 20px;
 }

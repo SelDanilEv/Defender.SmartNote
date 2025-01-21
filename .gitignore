@@ -31,8 +31,7 @@ Thumbs.db
 *.swo
 
 # Build and deployment artifacts
-/dist/
-.DIST/
+src/smartnote-api/dist/
 coverage/
 *.local
 *.cache

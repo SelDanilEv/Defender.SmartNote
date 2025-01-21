@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import axiosInstance from "@/utils/axiosInstance";
 
 export default {
   props: {
@@ -41,14 +41,13 @@ export default {
   methods: {
     async saveNote() {
       if (this.editingNote) {
-        await axios.put(`/api/notes/user123/${this.note.id}`, this.note);
+        await axiosInstance.put(`/note/${this.note.id}`, this.note);
         this.$emit("note-updated");
       } else {
         const newNote = {
-          userId: "user123",
           ...this.note,
         };
-        await axios.post(`/api/notes`, newNote);
+        await axiosInstance.post(`/note`, newNote);
         this.$emit("note-added");
       }
 

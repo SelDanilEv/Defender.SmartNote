@@ -34,4 +34,5 @@ services:
     environment:
       - MONGO_URI=
       - HUGGINGFACE_API_KEY=
+      - JWT_SECRET=
     restart: always

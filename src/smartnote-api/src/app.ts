@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import bodyParser from "body-parser";
 import noteRoutes from "./routes/note.routes";
+import authRoutes from "./routes/auth.routes";
 
 dotenv.config();
 
@@ -14,7 +15,8 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // Routes
-app.use("/api/notes", noteRoutes);
+app.use("/api/note", noteRoutes);
+app.use("/api/auth", authRoutes);
 
 // Database Connection
 const PORT = process.env.PORT || 8081;

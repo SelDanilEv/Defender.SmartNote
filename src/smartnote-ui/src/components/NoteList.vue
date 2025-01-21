@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import axiosInstance from "@/utils/axiosInstance";
 import NoteForm from "./NoteForm.vue";
 
 export default {
@@ -62,8 +62,7 @@ export default {
   },
   methods: {
     async fetchNotes() {
-      const userId = "user123"; // Replace with actual user ID
-      const response = await axios.get(`/api/notes/${userId}`);
+      const response = await axiosInstance.get(`/note/all`);
       this.notes = response.data;
     },
     confirmDelete(id) {
@@ -71,7 +70,7 @@ export default {
       this.showDeleteModal = true;
     },
     async deleteNote() {
-      await axios.delete(`/api/notes/user123/${this.noteToDelete}`); // Use axiosInstance
+      await axiosInstance.delete(`/note/${this.noteToDelete}`);
       this.showDeleteModal = false;
       this.noteToDelete = null;
       this.fetchNotes();

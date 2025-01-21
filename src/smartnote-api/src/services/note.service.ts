@@ -1,4 +1,4 @@
-import Note from "../models/note.model";
+import Note from "../db.models/note.model";
 import dotenv from "dotenv";
 import PromptBuilder from "../builders/LLMPrompt.builder";
 import MistalWrapper from "../wrappers/mistral.wrapper";
@@ -66,7 +66,7 @@ class NoteService {
 
   static async askAI(userId: string, prompt: string) {
     const userNotes = await Note.find({ userId });
-    if (!userNotes || userNotes.length === 0) {
+    if (!userNotes) {
       throw new Error("No notes found for the user");
     }
 
@@ -107,11 +107,17 @@ class NoteService {
       try {
         const noteToCreate = await MistalWrapper.askAI(noteDataPromt);
 
+        console.log("Note noteToCreate:", noteToCreate);
+
         const jsonString = noteToCreate.answer.replaceAll("`", "");
+
+        console.log("Note jsonString:", jsonString);
 
         const noteData = JSON.parse(jsonString);
 
         noteData.userId = userId;
+
+        console.log("Note data:", noteData);
 
         this.createNote(noteData);
 
