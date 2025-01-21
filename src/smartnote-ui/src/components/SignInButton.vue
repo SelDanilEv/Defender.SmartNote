@@ -59,7 +59,6 @@ button {
 }
 
 button:disabled {
-  background-color: var(--disabled-color);
   cursor: not-allowed;
 }
 
