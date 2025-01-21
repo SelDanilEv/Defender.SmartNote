@@ -19,7 +19,7 @@ export default {
     signIn() {
       this.isSigningIn = true;
       const currentUrl = window.location.origin;
-      const loginUrl = `https://${isLocal ? "localhost:47054" : "portal.coded-by-danil.dev"}/welcome/login?SsoUrl=${currentUrl}/login`;
+      const loginUrl = `https://${isLocal ? "localhost:47053" : "portal.coded-by-danil.dev"}/welcome/login?SsoUrl=${currentUrl}/login`;
       const portalTab = window.open(loginUrl, '_blank');
 
       const checkAuth = setInterval(() => {
