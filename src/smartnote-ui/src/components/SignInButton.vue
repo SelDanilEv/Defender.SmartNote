@@ -22,6 +22,12 @@ export default {
       const loginUrl = `https://${isLocal ? "localhost:47053" : "portal.coded-by-danil.dev"}/welcome/login?SsoUrl=${currentUrl}/login`;
       const portalTab = window.open(loginUrl, '_blank');
 
+      setInterval(() => {
+        if (portalTab.closed) {
+          this.isSigningIn = false;
+        }
+      }, 1000);
+
       const checkAuth = setInterval(() => {
         if (localStorage.getItem('token')) {
           clearInterval(checkAuth);

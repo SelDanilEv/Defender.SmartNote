@@ -27,12 +27,12 @@ services:
       - JWT_SECRET=
     restart: always
 
-  smartnote-watchtower:
-    image: containrrr/watchtower
-    container_name: smart-note-watchtower
-    restart: always
-    environment:
-      - WATCHTOWER_CLEANUP=true
-      - WATCHTOWER_POLL_INTERVAL=300
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
+  # smartnote-watchtower:
+  #   image: containrrr/watchtower
+  #   container_name: smart-note-watchtower
+  #   restart: always
+  #   environment:
+  #     - WATCHTOWER_CLEANUP=true
+  #     - WATCHTOWER_POLL_INTERVAL=300
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
