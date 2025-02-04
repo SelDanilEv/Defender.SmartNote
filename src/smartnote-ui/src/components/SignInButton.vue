@@ -18,9 +18,6 @@ export default {
     ...mapActions(['login']),
     signIn() {
       this.isSigningIn = true;
-      const currentUrl = window.location.origin;
-      const loginUrl = `https://${isLocal ? "localhost:47053" : "portal.coded-by-danil.dev"}/welcome/login?SsoUrl=${currentUrl}/login`;
-      const portalTab = window.open(loginUrl, '_blank');
 
       setInterval(() => {
         if (portalTab.closed) {
@@ -28,14 +25,27 @@ export default {
         }
       }, 1000);
 
-      const checkAuth = setInterval(() => {
-        if (localStorage.getItem('token')) {
-          clearInterval(checkAuth);
-          portalTab.close();
-          this.login(localStorage.getItem('token'));
-          this.$router.push('/note');
-        }
-      }, 2000);
+      const currentUrl = window.location.origin;
+      const basePortalUrl = isLocal ? "http://localhost:47053" : "https://portal.coded-by-danil.dev";
+      const loginUrl = `${basePortalUrl}/welcome/login?SsoUrl=${currentUrl}`;
+      const portalTab = window.open(loginUrl, '_blank');
+
+      if (portalTab) {
+        window.addEventListener("message", (event) => {
+          if (event.origin !== basePortalUrl) return;
+
+          const { token } = event.data;
+          if (token) {
+
+            this.login(token);
+
+            portalTab.close();
+            this.$router.push('/note');
+          }
+        });
+      } else {
+        console.error("Popup blocked! Allow popups for authentication.");
+      }
     },
   },
 };
